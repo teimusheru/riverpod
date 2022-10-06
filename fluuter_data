@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
+
+// StateProviderを使い受け渡すデータを定義する
+// ※ Providerの種類は複数あるが、ここではデータを更新できるStateProviderを使う
+final countProvider = StateProvider((ref) {
+  return 0;
+});
+
+void main() {
+  runApp(
+    // Riverpodでデータを受け渡しが可能な状態にするために必要
+    ProviderScope(
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        home: MyWidget(),
+      ),
+    ),
+  );
+}
+
+// ConsumerWidgetを使うとbuild()からデータを受け取る事ができる
+class MyWidget extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // watch()を使いデータを受け取る
+    // 値は.stateに入っている
+    final count = ref.watch(countProvider);
+
+    return Scaffold(
+      body: Center(
+        child: Text('count is $count'),
+      ),
+    );
+  }
+}
